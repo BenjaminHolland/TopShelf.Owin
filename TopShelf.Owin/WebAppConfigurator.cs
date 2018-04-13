@@ -7,6 +7,9 @@ using Topshelf.Logging;
 
 namespace Topshelf.Owin
 {
+    /// <summary>
+    /// Configure the Owin App
+    /// </summary>
     public class WebAppConfigurator
     {
         protected IDisposable WebApplication;
