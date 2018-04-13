@@ -13,9 +13,9 @@ namespace Topshelf.Owin
 
         protected readonly LogWriter Log;
 
-        public string Scheme { get; set; }
-        public string Domain { get; set; }
-        public int Port { get; set; }
+        public string Scheme { get;  }
+        public string Domain { get;  }
+        public int Port { get;  }
 
         protected IDependencyResolver DependencyResolver;
         protected Action<HttpConfiguration> HttpConfigurator;
