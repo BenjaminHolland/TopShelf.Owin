@@ -1,6 +1,7 @@
 ﻿using Microsoft.Owin.Hosting;
 using Owin;
 using System;
+using System.Collections.Generic;
 using System.Web.Http;
 using System.Web.Http.Dependencies;
 using Topshelf.Logging;
@@ -13,9 +14,9 @@ namespace Topshelf.Owin
 
         protected readonly LogWriter Log;
 
-        public string Scheme { get;  }
-        public string Domain { get;  }
-        public int Port { get;  }
+        public string Scheme { get; private set; }
+        public string Domain { get; private set; }
+        public int Port { get; private set; }
 
         protected IDependencyResolver DependencyResolver;
         protected Action<HttpConfiguration> HttpConfigurator;
@@ -36,6 +37,7 @@ namespace Topshelf.Owin
             AppBuilderConfigurator = appBuilder => { };
         }
 
+      
         public WebAppConfigurator ListenOn(string scheme,string domain,int port)
         {
             Scheme = scheme;
@@ -86,10 +88,10 @@ namespace Topshelf.Owin
 
         private void Startup(IAppBuilder appBuilder)
         {
-            AppBuilderConfigurator(appBuilder);
+            (AppBuilderConfigurator??throw new NullReferenceException("App Builder Configuration Not Set"))(appBuilder);
 
             var httpConfiguration = new HttpConfiguration();
-            HttpConfigurator(httpConfiguration);
+            (HttpConfigurator??throw new NullReferenceException("HTTP Configuration Not Set"))(httpConfiguration);
 
             if (DependencyResolver != null)
                 httpConfiguration.DependencyResolver = DependencyResolver;
