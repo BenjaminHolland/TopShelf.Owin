@@ -36,6 +36,14 @@ namespace Topshelf.Owin
             AppBuilderConfigurator = appBuilder => { };
         }
 
+        public WebAppConfigurator ListenOn(string scheme,string domain,int port)
+        {
+            Scheme = scheme;
+            Domain = domain;
+            Port = port;
+            return this;
+        }
+
         public WebAppConfigurator UseDependencyResolver(IDependencyResolver dependencyResolver)
         {
             DependencyResolver = dependencyResolver;
@@ -70,6 +78,12 @@ namespace Topshelf.Owin
             WebApplication = WebApp.Start(options, Startup);
         }
 
+        public void Stop()
+        {
+            Log.Info("[Topshelf.Owin] Stopping OWIN self-host");
+            WebApplication.Dispose();
+        }
+
         private void Startup(IAppBuilder appBuilder)
         {
             AppBuilderConfigurator(appBuilder);
@@ -83,11 +97,6 @@ namespace Topshelf.Owin
             appBuilder.UseWebApi(httpConfiguration);
         }
 
-        public void Stop()
-        {
-            Log.Info("[Topshelf.Owin] Stopping OWIN self-host");
-            WebApplication.Dispose();
-        }
 
     }
 
