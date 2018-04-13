@@ -73,7 +73,7 @@ namespace Topshelf.Owin
         public void Start()
         {
             var options = new StartOptions();
-            StartOptions(options);
+            (StartOptions??throw new NullReferenceException("Start Options Configuration Not Set"))(options);
 
             Log.InfoFormat("[Topshelf.Owin] Starting OWIN self-host, listening on: {0}", string.Join(", ", options.Urls));
             
